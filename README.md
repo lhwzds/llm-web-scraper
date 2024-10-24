@@ -24,8 +24,12 @@ After python enviroment created, use ```pip install -r requirements.txt``` to in
 
 2. Customization: You can modify the target URL and instructions in the main.py file to scrape and analyze different web pages.
 
+3. Output: You can monitor the progress for scraping and analysis after program started.
+   
+   ![Output Progress](https://github.com/lhwzds/llm-web-scraper/blob/main/output_progress.png)
 
 ## Project Structure
+
 This project consists of two main components that work together to scrape web content and analyze it using LLM (Language Learning Models) tools.
 
 ### RefusClient.py
