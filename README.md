@@ -42,7 +42,7 @@ This project consists of two main components that work together to scrape web co
 
 ### main.py
 
-    The main.py file is the entry point of the project. It orchestrates the scraping and analyzing tasks using the RufusClient class defined in RefusClient.py. This script is responsible for initialize RufusClient and execute scrape and analyze tasks for main url and sub urls. Finally it writes the analysis results to analysis_result.json.
+The main.py file is the entry point of the project. It orchestrates the scraping and analyzing tasks using the RufusClient class defined in RefusClient.py. This script is responsible for initialize RufusClient and execute scrape and analyze tasks for main url and sub urls. Finally it writes the analysis results to analysis_result.json.
 
 ## Challenges
 
@@ -50,24 +50,24 @@ This project consists of two main components that work together to scrape web co
 
 **Challenge:**
 
-    Scraping sub-links can be challenging due to the dynamic nature of modern websites. Many websites use JavaScript to load content asynchronously, which makes it difficult to retrieve all necessary data without rendering the page in a browser.
+Scraping sub-links can be challenging due to the dynamic nature of modern websites. Many websites use JavaScript to load content asynchronously, which makes it difficult to retrieve all necessary data without rendering the page in a browser.
 
 **Solution:**
 
-    Selenium is used to address this challenge by automating a real web browser (Chrome). It allows for the loading and rendering of dynamic content (such as pages that require scrolling or interaction).
-    WebDriverWait ensures that the necessary elements are fully loaded before attempting to scrape them.
-    However, scraping multiple sub-links requires managing browser resources efficiently and ensuring that you don’t overload the target server with requests.
+Selenium is used to address this challenge by automating a real web browser (Chrome). It allows for the loading and rendering of dynamic content (such as pages that require scrolling or interaction).
+WebDriverWait ensures that the necessary elements are fully loaded before attempting to scrape them.
+However, scraping multiple sub-links requires managing browser resources efficiently and ensuring that you don’t overload the target server with requests.
 
 ### Structured JSON Outputs for GPT Integration in RAG Systems
 
 **Challenge:**
 
-    When sending scraped content to GPT for analysis, generating structured outputs in JSON format is essential for integrating with Retrieval-Augmented Generation (RAG) systems. Unstructured text can be difficult to process and align with downstream tasks.
+When sending scraped content to GPT for analysis, generating structured outputs in JSON format is essential for integrating with Retrieval-Augmented Generation (RAG) systems. Unstructured text can be difficult to process and align with downstream tasks.
 
 **Solution:**
 
-    Instructing GPT to return results in a strictly structured JSON format ensures that the responses can be easily parsed and used programmatically.
-    For this,the analyze method leverages object definition and supply objects along system messages that guide GPT to format its outputs as JSON. This ensures consistency in the format across different responses. The structured JSON is particularly useful for RAG systems, where the output from the LLM is combined with retrieved documents, enabling more organized and scalable responses.
+Instructing GPT to return results in a strictly structured JSON format ensures that the responses can be easily parsed and used programmatically.
+For this,the analyze method leverages object definition and supply objects along system messages that guide GPT to format its outputs as JSON. This ensures consistency in the format across different responses. The structured JSON is particularly useful for RAG systems, where the output from the LLM is combined with retrieved documents, enabling more organized and scalable responses.
 
 ## output examples
 
