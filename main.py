@@ -8,12 +8,13 @@ import traceback
 # Get Rufus API key
 key = os.getenv('Rufus_API_KEY')
 client = RufusClient(api_key=key, verbose=True)
+max_links_to_analyze = 3
+        
+instruction = "Find information about products features and customer FAQs"
+url = "https://www.withchima.com/"
 
-# instruction = "Find information about products features and customer FAQs"
-# url = "https://www.withchima.com/"
-
-instruction = "Find information about AI advantages and disadvantages."
-url = "https://en.wikipedia.org/wiki/Intelligent_agent"
+# instruction = "Find information about AI advantages and disadvantages."
+# url = "https://en.wikipedia.org/wiki/Intelligent_agent"
 
 # Initialize the progress bar with elapsed time column
 progress = Progress(
@@ -37,7 +38,7 @@ try:
         progress.update(scrape_task, advance=1)
         
         analysis_results = {}
-        max_links_to_analyze = 3
+        
         # Task 2: Analyze the main URL
         if documents:
             analyze_task = progress.add_task("[green]Analyzing main document...", total=1)
