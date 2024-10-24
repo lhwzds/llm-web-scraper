@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 import openai
 from openai import OpenAI
 from pydantic import BaseModel
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from rich.console import Console
 from rich import print
 
@@ -74,14 +74,22 @@ class RufusClient:
             
             full_link_lst = set()
             for link in links:
+                if link.startswith('#'):
+                    # Skip fragment identifiers
+                    continue
+                if link.startswith('javascript:') or link.startswith('mailto:'):
+                    # Skip non-HTTP links
+                    continue
                 full_link = urljoin(url, link)
-                full_link_lst.add(full_link)
-            full_link_lst=list(full_link_lst)
+                parsed_link = urlparse(full_link)
+                if parsed_link.scheme in ['http', 'https']:
+                    full_link_lst.add(full_link)
+            full_link_lst = list(full_link_lst)
         
             return texts, full_link_lst
         else:
             if self.verbose:
-                print(f"[red]No accessScraping main URL... to website, Error code: {status_code}[/red]")
+                print(f"[red]URL {url} is not valid, Error code: {status_code}[/red]")
             return None
 
     def analyze(self, instruction, documents):

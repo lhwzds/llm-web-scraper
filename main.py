@@ -28,12 +28,16 @@ try:
     with progress:
         # Task 1: Scrape the main URL
         scrape_task = progress.add_task("[cyan]Scraping main URL...", total=1)
-        documents, full_link_lst = client.scrape(url)
+        message = client.scrape(url)
+        
+        if message is None:
+            raise ValueError("Message cannot be None.")
+
+        documents, full_link_lst = message
         progress.update(scrape_task, advance=1)
         
         analysis_results = {}
-        max_links_to_analyze = 5
-
+        max_links_to_analyze = 3
         # Task 2: Analyze the main URL
         if documents:
             analyze_task = progress.add_task("[green]Analyzing main document...", total=1)
@@ -50,19 +54,23 @@ try:
             for link in full_link_lst[:max_links_to_analyze]:
                 # Task 3a: Scrape the sub-link
                 sub_scrape_task = progress.add_task(f"[cyan]Scraping sub-link: {link}...", total=1)
-                sub_documents, _ = client.scrape(link)
-                progress.update(sub_scrape_task, advance=1)
-
-                if sub_documents:
-                    # Task 3b: Analyze the sub-link
-                    sub_analyze_task = progress.add_task(f"[green]Analyzing sub-document for {link}...", total=1)
-                    sub_analysis_result = client.analyze(instruction, sub_documents)
-                    progress.update(sub_analyze_task, advance=1)
-
-                    if sub_analysis_result is not None:
-                        analysis_results[link] = json.loads(sub_analysis_result.content)
+                message = client.scrape(link)
+                if message is None:
+                    pass
                 else:
-                    print(f"[red]Unable to analyze sub-document for {link}[/red]")
+                    sub_documents, _ = message 
+                    progress.update(sub_scrape_task, advance=1)
+                    
+                    if sub_documents:
+                        # Task 3b: Analyze the sub-link
+                        sub_analyze_task = progress.add_task(f"[green]Analyzing sub-document for {link}...", total=1)
+                        sub_analysis_result = client.analyze(instruction, sub_documents)
+                        progress.update(sub_analyze_task, advance=1)
+
+                        if sub_analysis_result is not None:
+                            analysis_results[link] = json.loads(sub_analysis_result.content)
+                    else:
+                        print(f"[red]Unable to analyze sub-document for {link}[/red]")
 
         # Save analysis results
         if analysis_results:
